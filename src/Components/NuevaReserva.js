@@ -28,6 +28,7 @@ export default function NuevaReserva(props){
     const [capacidad,setCapacidad] = useState();
     const [horarios,setHorarios] = useState([{inicio:13,fin:14,disponible: true},{inicio:14,fin:15, disponible: true},{inicio:15,fin:16, disponible: false},{inicio:16,fin:17,  disponible: true}]);
     const [checkedHorarios,setCheckedHorarios] = useState(new Set())
+    const [mesasFiltradas,setMesasFiltradas] = useState([]);
     const horas = [12,13,14,15,16,17,18,19,20,21,22]
     const onClickContinue = () => {
         axios.get("http://localhost:9090/api/cliente/consulta", {params: {cedula: cliente.cedula}})
@@ -72,6 +73,7 @@ export default function NuevaReserva(props){
             }); 
             disponibilidad.push(franja)
         });
+        
         setHorarios(disponibilidad)
     },[mesas]);
   	useEffect(() => {
@@ -101,6 +103,16 @@ export default function NuevaReserva(props){
         })
         handleChange("horaInicio",minimo)
         handleChange("horaFin",maximo)
+        const nuevasMesas = mesas.filter((mesa)=>{
+            let disponible = true;
+            for(let i = 0; i < maximo-minimo; i++){
+                const hora = minimo + i;
+                if (!mesa.disponibilidad[hora])
+                    disponible = false;
+            }
+            return disponible;
+        })
+        setMesasFiltradas(nuevasMesas)
         setStep(4);
     };
     const onClickNuevaReserva = () => {
@@ -383,7 +395,7 @@ export default function NuevaReserva(props){
                             </DialogContentText>
                             <RadioGroup value={reserva.MesaId} onChange={event => handleChange("MesaId",event.target.value)}>
                             {
-                                mesas.map((mesa) => (
+                                mesasFiltradas.map((mesa) => (
                                     <FormControlLabel value={mesa.id} control={<Radio />} label={"número de mesa: " + mesa.numero + " Capacidad: " + mesa.capacidad} />
                                 ))
                             }
