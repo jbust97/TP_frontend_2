@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+//import Plan from './Plan.js'
+import {Grid, Paper} from '@material-ui/core';
+import NavBar from './Components/NavBar';
+  import Reservas from './Components/Reservas';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NavBar/> 
+      <Grid container xs={12}>     
+        <Grid item xs={10} style={{margin: 'auto', marginTop: "20px"}}>
+        <Paper style={{maxWidth: 1300}}> 
+          <Reservas/> 
+        </Paper>
+        </Grid> 
+      </Grid>
     </div>
   );
 }
