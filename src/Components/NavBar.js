@@ -5,6 +5,9 @@ import {
     Typography,
     Button,
 } from '@material-ui/core';
+import {
+    Link
+} from 'react-router-dom';
 import NuevaReserva from './NuevaReserva'
 import Plan from './Plan'
 export default function NavBar(){
@@ -28,14 +31,15 @@ export default function NavBar(){
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" style={{flexGrow: 1}}>
-                    Restp
+                    Restop
                     </Typography>
-                    <Button variant="contained" onClick={handleClickOpenPlan} style={{marginRight:"20px"}}>Plano del restaurante</Button>
+                    <Link to="/consumo"><Button variant="contained" onClick={handleClickOpenPlan} style={{marginRight:"20px"}}>Consumición</Button></Link>
+                    <Link to="/reservas"><Button variant="contained" onClick={handleClickOpenPlan} style={{marginRight:"20px"}}>Reservas</Button></Link>
                     <Button variant="contained" onClick={handleClickOpen}>Nueva Reserva</Button> 
                 </Toolbar>
             </AppBar>
             <NuevaReserva open={open} handleClose={() => {handleClose()}}/>
-            <Plan open ={openPlan} handleClose={()=>{handleClosePlan()}}/>
+            
         </div>
     );
 }
