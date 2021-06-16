@@ -281,7 +281,7 @@ export default function DetalleConsumo (){
                     setConsumo((prev)=>({
                         ...prev,
                         cliente: newValue,
-                        ClienteId: newValue.id
+                        ClienteId: newValue?.id
                     }))
                 }}
                 renderInput={(params) => <TextField {...params} label="Clientes" variant="outlined" />}
