@@ -95,7 +95,16 @@ export default function DetalleConsumo (){
         axios.get("http://localhost:9090/api/mesa/" + id + "/consumo")
         .then(response => {
             if (response.data){
+            
                 setConsumo(response.data)
+                axios.get("http://localhost:9090/api/cliente/" + response.data.ClienteId)
+                    .then(response => setConsumo(prev=>(
+                        {
+                            ...prev,
+                            cliente: response.data,
+                            ClienteId: response.data.id 
+                        }
+                    )))
             }else{
                 
                 axios.post("http://localhost:9090/api/gestioncabecera/", {
@@ -108,16 +117,7 @@ export default function DetalleConsumo (){
                 .catch(err=> console.log("Error en: " + err));
             }
         }).then(() => {
-            if (consumo.ClienteId){
-                axios.get("http://localhost:9090/api/cliente/" + consumo.ClienteId)
-                .then(response => setConsumo(prev=>(
-                    {
-                        ...prev,
-                        cliente: response.data,
-                        ClienteId: response.data.id 
-                    }
-                )))
-            }
+            
             }
         )
         .catch(err => {
@@ -142,21 +142,24 @@ export default function DetalleConsumo (){
             axios.get("http://localhost:9090/api/gestiondetalle/consulta",{params: {cabeceraId: consumo.id}})
             .then(response => setDetalles(response.data)).catch(err=>console.log(err));
             
-            axios.put("http://localhost:9090/api/gestioncabecera/" + consumo.id, consumo).catch(err=> {console.log("Error al actualizar: " + err); console.log(consumo)}); 
-        }
-        if (consumo.cerrado){
-            axios({
-                url: "http://localhost:9090/api/gestioncabecera/" + consumo.id + "/ticket",
-                method: 'GET',
-                responseType: 'blob', // important
-            }).then((response) => {
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'file.pdf');
-                document.body.appendChild(link);
-                link.click();
-            }).catch(err=>console.log(err))
+            axios.put("http://localhost:9090/api/gestioncabecera/" + consumo.id, consumo)
+            .then(()=>{
+                if (consumo.cerrado){ 
+                    axios({
+                        url: "http://localhost:9090/api/gestioncabecera/" + consumo.id + "/ticket",
+                        method: 'GET',
+                        responseType: 'blob', // important
+                    }).then((response) => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'file.pdf');
+                        document.body.appendChild(link);
+                        link.click();
+                    }).catch(err=>console.log(err))
+                }
+            }).
+            catch(err=> {console.log("Error al actualizar: " + err); console.log(consumo)}); 
         }
     },[consumo])  
     

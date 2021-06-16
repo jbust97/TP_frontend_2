@@ -26,7 +26,7 @@ const RestauranteBarra = (props)=>{
     },[open]);
     return (
         <div>
-            <ListItem button onClick={handleClick} style={{backgroundColor: "#39a6a3"}}>
+            <ListItem button onClick={handleClick} style={{backgroundColor: "#A7D0CD"}}>
                             <ListItemText primary={props.restaurante.nombre} />
                             {open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
@@ -37,7 +37,7 @@ const RestauranteBarra = (props)=>{
                     {mesas.map((mesa)=>{
                         return (
                             <ListItem button>
-                                <Link to={"consumo/" + mesa.id} ><ListItemText primary={"Número: " + mesa.numero } /></Link>
+                                <Link  style={{ textDecoration: 'none', color: "black"}} to={"consumo/" + mesa.id} ><ListItemText primary={"Número: " + mesa.numero } /></Link>
                             </ListItem>
                         )
                     })}
